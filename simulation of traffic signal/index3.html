@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Traffic Management Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+        .intersection {
+            position: relative;
+            width: 400px;
+            height: 400px;
+            background: #333;
+        }
+        .road {
+            position: absolute;
+            background: #555;
+        }
+        .horizontal-road {
+            width: 100%;
+            height: 80px;
+            top: 160px;
+            left: 0;
+        }
+        .vertical-road {
+            width: 80px;
+            height: 100%;
+            top: 0;
+            left: 160px;
+        }
+        .junction {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            background: #222;
+        }
+        .junction.light-1 { top: 20px; left: 20px; }
+        .junction.light-2 { top: 20px; right: 20px; }
+        .junction.light-3 { bottom: 20px; left: 20px; }
+        .junction.light-4 { bottom: 20px; right: 20px; }
+        .light {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 5px;
+            background-color: red;
+        }
+        .green {
+            background-color: green;
+        }
+        .camera {
+            position: absolute;
+            width: 20px;
+            height: 10px;
+            background: #000;
+            top: 5px;
+            right: 5px;
+            border-radius: 3px;
+        }
+        .car {
+            position: absolute;
+            width: 20px;
+            height: 10px;
+            background: yellow;
+            border-radius: 5px;
+        }
+        .car-animation {
+            animation: move-car 4s linear infinite;
+        }
+        @keyframes move-car {
+            0% { transform: translate(0, 0); }
+            25% { transform: translate(180px, 0); }
+            50% { transform: translate(180px, 180px); }
+            75% { transform: translate(0, 180px); }
+            100% { transform: translate(0, 0); }
+        }
+    </style>
+</head>
+<body>
+    <div class="intersection">
+        <div class="road horizontal-road"></div>
+        <div class="road vertical-road"></div>
+
+        <!-- Junctions -->
+        <div class="junction light-1" id="junction1">
+            <div class="light"></div>
+            <div class="camera"></div>
+        </div>
+        <div class="junction light-2" id="junction2">
+            <div class="light"></div>
+            <div class="camera"></div>
+        </div>
+        <div class="junction light-3" id="junction3">
+            <div class="light"></div>
+            <div class="camera"></div>
+        </div>
+        <div class="junction light-4" id="junction4">
+            <div class="light"></div>
+            <div class="camera"></div>
+        </div>
+
+        <!-- Moving Cars -->
+        <div class="car car-animation" style="top: 180px; left: 0;"></div>
+        <div class="car car-animation" style="top: 0; left: 180px;"></div>
+        <div class="car car-animation" style="bottom: 180px; right: 0;"></div>
+        <div class="car car-animation" style="bottom: 0; right: 180px;"></div>
+    </div>
+
+    <script>
+        const lights = [
+            document.getElementById('junction1').querySelector('.light'),
+            document.getElementById('junction2').querySelector('.light'),
+            document.getElementById('junction3').querySelector('.light'),
+            document.getElementById('junction4').querySelector('.light')
+        ];
+
+        function updateTraffic() {
+            // Simulate vehicle counts (random for now)
+            const vehicleCounts = [
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+                Math.floor(Math.random() * 100),
+            ];
+
+            // Find the junction with the maximum vehicles
+            const maxIndex = vehicleCounts.indexOf(Math.max(...vehicleCounts));
+
+            // Update traffic lights
+            lights.forEach((light, index) => {
+                if (index === maxIndex) {
+                    light.classList.add('green');
+                } else {
+                    light.classList.remove('green');
+                }
+            });
+        }
+
+        // Update traffic every 5 seconds
+        setInterval(updateTraffic, 5000);
+    </script>
+</body>
+</html>

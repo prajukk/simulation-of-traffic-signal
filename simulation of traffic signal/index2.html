@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Traffic Management Animation</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f4f4f4;
+            font-family: Arial, sans-serif;
+        }
+        .intersection {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .junction {
+            width: 150px;
+            height: 150px;
+            border: 2px solid #333;
+            border-radius: 10px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .light {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin: 5px;
+            background-color: red;
+            animation: fade 2s infinite;
+        }
+        .green {
+            background-color: green;
+        }
+        .counter {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #333;
+            color: white;
+            border-radius: 50%;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="intersection">
+        <div class="junction" id="junction1">
+            <div class="light"></div>
+            <div class="counter" id="counter1">0</div>
+        </div>
+        <div class="junction" id="junction2">
+            <div class="light"></div>
+            <div class="counter" id="counter2">0</div>
+        </div>
+        <div class="junction" id="junction3">
+            <div class="light"></div>
+            <div class="counter" id="counter3">0</div>
+        </div>
+        <div class="junction" id="junction4">
+            <div class="light"></div>
+            <div class="counter" id="counter4">0</div>
+        </div>
+    </div>
+
+    <script>
+        // Simulated vehicle counts at each junction
+        const vehicleCounts = [0, 0, 0, 0];
+        const counters = [
+            document.getElementById('counter1'),
+            document.getElementById('counter2'),
+            document.getElementById('counter3'),
+            document.getElementById('counter4')
+        ];
+        const lights = [
+            document.getElementById('junction1').querySelector('.light'),
+            document.getElementById('junction2').querySelector('.light'),
+            document.getElementById('junction3').querySelector('.light'),
+            document.getElementById('junction4').querySelector('.light')
+        ];
+
+        function updateTraffic() {
+            // Randomly increase vehicle counts
+            vehicleCounts.forEach((_, i) => {
+                vehicleCounts[i] = Math.floor(Math.random() * 100);
+            });
+
+            // Find the junction with the maximum vehicles
+            const maxIndex = vehicleCounts.indexOf(Math.max(...vehicleCounts));
+
+            // Update counters and traffic lights
+            vehicleCounts.forEach((count, i) => {
+                counters[i].textContent = count;
+                if (i === maxIndex) {
+                    lights[i].classList.add('green');
+                } else {
+                    lights[i].classList.remove('green');
+                }
+            });
+        }
+
+        // Update traffic every 3 seconds
+        setInterval(updateTraffic, 3000);
+    </script>
+</body>
+</html>
